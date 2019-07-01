@@ -19,7 +19,7 @@
 
   .calendar__day {
     height: var(--calendar-day-height);
-    overflow-y: scroll;
+    overflow-y: auto;
   }
 </style>
 
@@ -27,19 +27,17 @@
 
 <div class="calendar">
   {#each $monthDatesArray as day}
-    <div class="calendar__day ba b--black-05">
+    <div
+      class="calendar__day ba b--black-05"
+      transition:fade={{ delay: 0, duration: 100 }}>
       {#if day >= 0}
-        <div
-          class="calendar__day ba b--black-05"
-          transition:fade={{ delay: 0, duration: 100 }}>
-          <div class="flex justify-end pa2">
-            <Day isToday={isSameDay(new Date(), new Date($year, $month, day))}>
-               {day}
-            </Day>
-          </div>
-          <GameList
-            games={($gamesBucket[$year] && $gamesBucket[$year][$month] && $gamesBucket[$year][$month][day]) || []} />
+        <div class="flex justify-end pa2">
+          <Day isToday={isSameDay(new Date(), new Date($year, $month, day))}>
+             {day}
+          </Day>
         </div>
+        <GameList
+          games={($gamesBucket[$year] && $gamesBucket[$year][$month] && $gamesBucket[$year][$month][day]) || []} />
       {/if}
     </div>
   {/each}

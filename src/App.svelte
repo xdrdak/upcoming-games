@@ -49,6 +49,8 @@
 
   <FavsOnly />
 
-  <Calendar />
+  <div class="mb4">
+    <Calendar />
+  </div>
 
 </div>

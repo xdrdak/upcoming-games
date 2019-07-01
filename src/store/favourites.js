@@ -1,8 +1,10 @@
-import { writable, derived } from 'svelte/store';
+import { writable } from 'svelte/store';
 import { createLocalStorage } from '../localstorage-fns';
 import { addItem, removeItem } from '../array-fns';
 
 const storage = createLocalStorage('games', []);
+
+const favsOnly = writable(false);
 
 const favouritedGames = writable(storage.getItem());
 
@@ -22,4 +24,4 @@ function toggleFavouriteGame(gameID) {
   });
 }
 
-export { favouritedGames, toggleFavouriteGame };
+export { favouritedGames, toggleFavouriteGame, favsOnly };

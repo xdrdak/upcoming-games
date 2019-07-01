@@ -14,6 +14,8 @@ function createStore() {
   };
 }
 
+const gamesStore = createStore();
+
 const monthGames = derived([games, year, month], ([$games, $year, $month]) => {
   const requestedDate = new Date($year, $month);
 
@@ -26,6 +28,31 @@ const monthGames = derived([games, year, month], ([$games, $year, $month]) => {
   });
 });
 
-const gamesStore = createStore();
+const gamesBucket = derived([games], ([$games]) => {
+  const bucket = $games.reduce((acc, game) => {
+    const date = new Date(game.date);
+    const gameYear = date.getFullYear();
+    const gameMonth = date.getMonth();
+    const gameDay = date.getDate();
 
-export { gamesStore, monthGames };
+    if (!acc[gameYear]) {
+      acc[gameYear] = {};
+    }
+
+    if (!acc[gameYear][gameMonth]) {
+      acc[gameYear][gameMonth] = {};
+    }
+
+    if (!acc[gameYear][gameMonth][gameDay]) {
+      acc[gameYear][gameMonth][gameDay] = [];
+    }
+
+    acc[gameYear][gameMonth][gameDay].push(game);
+
+    return acc;
+  }, {});
+
+  return bucket;
+});
+
+export { gamesStore, monthGames, gamesBucket };

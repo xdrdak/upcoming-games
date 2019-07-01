@@ -9,16 +9,13 @@
   import MonthSelect from "./MonthSelect.svelte";
   import YearSelect from "./YearSelect.svelte";
   import Title from "./Title.svelte";
+  import PlatformSelect from "./PlatformSelect.svelte";
 
-  import { gamesStore, monthGames } from "./store/games";
+  import { gamesStore, monthGames, gamesBucket } from "./store/games";
   import { month, year } from "./store/time";
   import { monthDatesArray } from "./store/calendar";
 
   import { addItem, removeItem } from "./array-fns";
-
-  function filterGamesByDay(g, requestedDate) {
-    return g.filter(({ date }) => isSameDay(requestedDate, new Date(date)));
-  }
 
   let favsOnly = false;
   let errors = null;
@@ -58,16 +55,13 @@
 
   <div class="measure flex">
     <div class="mr3">
-      <label for="console" class="f6 b db mb2">Platform</label>
-      <select name="console" class="select">
-        <option value="all">All</option>
-        <option value="switch">Switch</option>
-        <option value="ps4">PS4</option>
-      </select>
+      <PlatformSelect />
     </div>
+
     <div class="mr3">
       <MonthSelect />
     </div>
+
     <div>
       <YearSelect />
     </div>
@@ -93,7 +87,7 @@
             </div>
             <GameList
               {favsOnly}
-              games={filterGamesByDay($monthGames, new Date($year, $month, day))} />
+              games={($gamesBucket[$year] && $gamesBucket[$year][$month] && $gamesBucket[$year][$month][day]) || []} />
           </div>
         {/if}
       </div>

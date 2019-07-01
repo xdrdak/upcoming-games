@@ -1,24 +1,23 @@
 <script>
   import kebabcase from "lodash.kebabcase";
-
+  import { favouritedGames, toggleFavouriteGame } from "../store/favourites";
   export let games;
-  export let favouritedGames = [];
+
   export let favsOnly = false;
-  export let onStarClick = () => {};
 </script>
 
 <ul class="games-list list ma0 pa0">
   {#if favsOnly}
     {#each games as game}
-      {#if favouritedGames.indexOf(game._id) !== -1}
+      {#if $favouritedGames.indexOf(game._id) !== -1}
         <li
           class="br3 mb1 pa1 nowrap overflow-hidden truncate"
           class:bg-light-pink={game.gameConsole === 'ps4'}
           class:bg-light-green={game.gameConsole === 'switch'}>
           <span
             class="pointer hover-gold link"
-            on:click={() => onStarClick(game._id)}
-            class:gold={favouritedGames.indexOf(game._id) !== -1}>
+            on:click={() => toggleFavouriteGame(game._id)}
+            class:gold={$favouritedGames.indexOf(game._id) !== -1}>
             ★
           </span>
           <a
@@ -39,8 +38,8 @@
         class:bg-light-green={game.gameConsole === 'switch'}>
         <span
           class="pointer hover-gold link"
-          on:click={() => onStarClick(game._id)}
-          class:gold={favouritedGames.indexOf(game._id) !== -1}>
+          on:click={() => toggleFavouriteGame(game._id)}
+          class:gold={$favouritedGames.indexOf(game._id) !== -1}>
           ★
         </span>
         <a

@@ -1,10 +1,13 @@
+import { derived } from 'svelte/store';
+import { month, year } from './time';
 import startOfMonth from 'date-fns/start_of_month';
 import endOfMonth from 'date-fns/end_of_month';
 
 // 7 rows (aka, our 7 days), multiplied by 6 rows (4 weeks + 2 for padding)
 const DAYS_TO_RENDER = 42;
 
-function generateMonthDatesArray(date = new Date()) {
+function generateMonthDatesArray(month, year) {
+  const date = new Date(year, month);
   const start = startOfMonth(date);
   const end = endOfMonth(date);
   const datesArray = [];
@@ -26,4 +29,8 @@ function generateMonthDatesArray(date = new Date()) {
   return datesArray;
 }
 
-export { generateMonthDatesArray };
+const monthDatesArray = derived([month, year], ([$month, $year]) => {
+  return generateMonthDatesArray($month, $year);
+});
+
+export { monthDatesArray };

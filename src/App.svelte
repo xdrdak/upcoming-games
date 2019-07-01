@@ -1,6 +1,6 @@
 <script>
   import { onMount } from "svelte";
-
+  import { slide } from "svelte/transition";
   import { getGames } from "./api.js";
   import Calendar from "./components/calendar/Calendar.svelte";
   import MonthSelect from "./components/MonthSelect.svelte";
@@ -19,6 +19,12 @@
       throw new Error(e);
     }
   });
+
+  let filterActive = false;
+
+  function toggleFilter() {
+    filterActive = !filterActive;
+  }
 </script>
 
 <style>
@@ -29,25 +35,42 @@
 
 <div class="container mr-auto ml-auto">
 
-  <div class="mb4 tr">
+  <div class="mb4">
     <Title />
   </div>
 
-  <div class="measure flex">
-    <div class="mr3">
-      <PlatformSelect />
-    </div>
+  <button
+    on:click={toggleFilter}
+    type="button"
+    style="cursor: pointer;"
+    class="no-underline cursor black bg-animate inline-flex items-center pa2 pl0
+    bn border-box">
+    Filters 
+    <span class="ml2 f7 pt1">
+      {#if filterActive}▼{:else}►{/if}
+    </span>
+  </button>
 
-    <div class="mr3">
-      <MonthSelect />
-    </div>
+  {#if filterActive}
+    <div transition:slide>
 
-    <div>
-      <YearSelect />
-    </div>
-  </div>
+      <div class="measure flex">
+        <div class="mr3">
+          <PlatformSelect />
+        </div>
 
-  <FavsOnly />
+        <div class="mr3">
+          <MonthSelect />
+        </div>
+
+        <div>
+          <YearSelect />
+        </div>
+      </div>
+
+      <FavsOnly />
+    </div>
+  {/if}
 
   <div class="mb4">
     <Calendar />

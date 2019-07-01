@@ -2,45 +2,36 @@
   import { onMount } from "svelte";
   import { getGames } from "./api.js";
   import WeekRow from "./calendar/WeekRow.svelte";
+  import Day from "./calendar/Day.svelte";
+  import GameList from "./calendar/GameList.svelte";
   import { months } from "./months.js";
-  import { startOfMonth, endOfMonth } from "date-fns";
+  import { generateMonthDatesArray } from "./generateMonthDatesArray.js";
+  import { isSameDay, isSameMonth, isSameYear, parse } from "date-fns";
+  import kebabcase from "lodash.kebabcase";
 
   const today = new Date();
-  const year = today.getFullYear();
 
   function filterGamesByYearMonth(g, year, month) {
-    const formattedMonth = month < 10 ? `0${month}` : month;
-    const thisMonthAndYear = `${today.getFullYear()}-${formattedMonth}`;
-    return g.filter(({ date }) => date.includes(thisMonthAndYear));
+    const requestedDate = new Date(year, month);
+    return g.filter(({ date }) => {
+      const parsedDate = new Date(date);
+      return (
+        isSameMonth(parsedDate, requestedDate) &&
+        isSameYear(parsedDate, requestedDate)
+      );
+    });
   }
+
+  function filterGamesByDay(g, requestedDate) {
+    return g.filter(({ date }) => isSameDay(requestedDate, new Date(date)));
+  }
+
+  let year = today.getFullYear();
   let games = [];
   // Using this value to filter out the right games for the month;
-  let selectedMonth = 7; //today.getMonth()
-
-  // 7 rows (aka, our 7 days), multiplied by 6 rows (4 weeks + 2 for padding)
-  const daysToRender = 42;
-  function generateMonthDatesArray(date = new Date()) {
-    const start = startOfMonth(date);
-    const end = endOfMonth(date);
-    const datesArray = [];
-    let monthHasNowBegun = false;
-    let offset = 0;
-
-    for (let i = 0; i < daysToRender; i++) {
-      if (i === start.getDay()) {
-        monthHasNowBegun = true;
-      }
-
-      if (monthHasNowBegun && i - offset < end.getDate()) {
-        datesArray.push(i - offset + 1);
-      } else {
-        offset++;
-        datesArray.push(-1);
-      }
-    }
-    return datesArray;
-  }
-
+  let selectedMonthIndex = 6; //today.getMonth()
+  $: currentSelectedMonth = new Date(year, selectedMonthIndex);
+  $: gamesForTheMonth = filterGamesByYearMonth(games, year, selectedMonthIndex);
   let errors = null;
 
   onMount(async function() {
@@ -54,56 +45,81 @@
 </script>
 
 <style>
-  h1 {
-    color: purple;
-  }
-
   .calendar {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    grid-template-rows: repeat(6, 1fr);
-    grid-gap: 8px;
+    grid-template-columns: var(--calendar-template-columns);
+    grid-template-rows: var(--calendar-template-rows);
   }
 
   .calendar__day {
-    height: 125px;
-    position: relative;
+    height: 145px;
+    overflow-y: scroll;
   }
 
-  .calendary__day-number {
-    position: absolute;
-    top: 10px;
-    right: 10px;
+  .container {
+    max-width: var(--container-width);
+  }
+
+  .select {
+    background-image: none;
+    background-clip: padding-box;
+    background-color: #fff;
+    border: 1px solid hsl(220, 20%, 80%);
+    border-radius: 0.25rem;
+    color: hsl(220, 20%, 50%);
+    font-size: 0.875rem;
+    font-weight: 200;
+    letter-spacing: -0.02em;
+    line-height: 1.5;
+    transition: all 0.15s ease-in-out;
+    height: 34px;
   }
 </style>
 
-<div class="mw9 mr-auto ml-auto">
-   {year}
-  <select bind:value={selectedMonth}>
-    {#each months as month, index (month)}
-      <option value={index}>{month}</option>
-    {/each}
-  </select>
+<div class="container mr-auto ml-auto">
 
-  <ul style="display: none;">
-    {#each filterGamesByYearMonth(games, year, selectedMonth) as link}
-      <li>{link.name}</li>
-    {/each}
-  </ul>
-
-  <div class="mb3">
-    <WeekRow />
+  <div class="mb4 tr">
+    <div class="dib">
+      <div class="f3 f2-m f1-l">Upcoming games</div>
+      <h1 class="f3 f1-m f-headline-l tr ma0">{months[selectedMonthIndex]}</h1>
+    </div>
   </div>
 
+  <div class="measure flex">
+    <div class="mr3">
+      <label for="month" class="f6 b db mb2">Month</label>
+      <select name="month" class="select" bind:value={selectedMonthIndex}>
+        {#each months as month, index (month)}
+          <option value={index}>{month}</option>
+        {/each}
+      </select>
+    </div>
+    <div>
+      <label for="month" class="f6 b db mb2">Year</label>
+      <select name="month" class="select" bind:value={year}>
+        <option value={today.getFullYear()}>{today.getFullYear()}</option>
+        <option value={today.getFullYear() + 1}>
+           {today.getFullYear() + 1}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <WeekRow />
+
   <div class="calendar">
-    {#each generateMonthDatesArray(new Date(year, selectedMonth)) as day}
-      {#if day >= 0}
-        <div class="calendar__day">
-          <span class="calendary__day-number">{day}</span>
-        </div>
-      {:else}
-        <div class="calendar__day" />
-      {/if}
+    {#each generateMonthDatesArray(currentSelectedMonth) as day}
+      <div class="calendar__day ba b--black-05">
+        {#if day >= 0}
+          <div class="calendar__day ba b--black-05">
+            <div class="flex justify-end pa2">
+              <Day> {day} </Day>
+            </div>
+            <GameList
+              games={filterGamesByDay(gamesForTheMonth, new Date(year, selectedMonthIndex, day))} />
+          </div>
+        {/if}
+      </div>
     {/each}
   </div>
 

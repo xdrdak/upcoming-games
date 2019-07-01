@@ -52,6 +52,7 @@
         {#if filterActive}▼{:else}►{/if}
       </span>
     </button>
+
     <MonthSwitcher />
   </div>
 
@@ -72,7 +73,9 @@
         </div>
       </div>
 
-      <FavsOnly />
+      <div class="mv2">
+        <FavsOnly />
+      </div>
     </div>
   {/if}
 

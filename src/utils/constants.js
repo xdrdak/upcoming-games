@@ -23,4 +23,6 @@ const weekdayNames = [
   'Saturday',
 ];
 
-export { months, weekdayNames };
+const today = new Date();
+
+export { months, weekdayNames, today };

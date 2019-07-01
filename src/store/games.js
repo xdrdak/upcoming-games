@@ -5,17 +5,6 @@ import { year, month } from './time';
 
 const games = writable([]);
 
-function createStore() {
-  return {
-    subscribe: games.subscribe,
-    setGames: data => {
-      games.set(data);
-    },
-  };
-}
-
-const gamesStore = createStore();
-
 const monthGames = derived([games, year, month], ([$games, $year, $month]) => {
   const requestedDate = new Date($year, $month);
 
@@ -55,4 +44,4 @@ const gamesBucket = derived([games], ([$games]) => {
   return bucket;
 });
 
-export { gamesStore, monthGames, gamesBucket };
+export { games, monthGames, gamesBucket };

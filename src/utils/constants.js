@@ -13,4 +13,14 @@ const months = [
   'December',
 ];
 
-export { months };
+const weekdayNames = [
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+];
+
+export { months, weekdayNames };

@@ -1,6 +1,6 @@
 <script>
-  import { month } from "./store/time";
-  import { months } from "./months.js";
+  import { month } from "../store/time";
+  import { months } from "../utils/constants";
 </script>
 
 <div class="dib">

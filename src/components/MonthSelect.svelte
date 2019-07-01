@@ -1,6 +1,6 @@
 <script>
-  import { month } from "./store/time";
-  import { months } from "./months";
+  import { month } from "../store/time";
+  import { months } from "../utils/constants";
 </script>
 
 <label for="month" class="f6 b db mb2">Month</label>

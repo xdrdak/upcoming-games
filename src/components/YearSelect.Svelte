@@ -1,5 +1,5 @@
 <script>
-  import { year } from "./store/time";
+  import { year } from "../store/time";
 
   const today = new Date();
 </script>

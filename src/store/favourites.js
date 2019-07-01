@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store';
-import { createLocalStorage } from '../localstorage-fns';
-import { addItem, removeItem } from '../array-fns';
+import { createLocalStorage } from '../utils/localstorage-fns';
+import { addItem, removeItem } from '../utils/array-fns';
 
 const storage = createLocalStorage('games', []);
 

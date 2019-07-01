@@ -1,13 +1,5 @@
 <script>
-  const weekdayNames = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday"
-  ];
+  import { weekdayNames } from "../../utils/constants";
 </script>
 
 <style>

@@ -1,5 +1,5 @@
 <script>
-  import { favsOnly } from "./store/favourites";
+  import { favsOnly } from "../store/favourites";
 </script>
 
 <div class="mv2">

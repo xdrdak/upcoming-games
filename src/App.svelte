@@ -1,17 +1,19 @@
 <script>
   import { onMount } from "svelte";
-  import { getGames } from "./api.js";
-  import WeekRow from "./calendar/WeekRow.svelte";
-  import Day from "./calendar/Day.svelte";
-  import GameList from "./calendar/GameList.svelte";
-  import { months } from "./months.js";
-  import { generateMonthDatesArray } from "./generateMonthDatesArray.js";
   import isSameDay from "date-fns/is_same_day";
   import isSameMonth from "date-fns/is_same_month";
   import isSameYear from "date-fns/is_same_year";
   import kebabcase from "lodash.kebabcase";
 
-  const today = new Date();
+  import { getGames } from "./api.js";
+  import WeekRow from "./calendar/WeekRow.svelte";
+  import Day from "./calendar/Day.svelte";
+  import GameList from "./calendar/GameList.svelte";
+  import { gamesStore, monthGames } from "./store/games";
+  import { months } from "./months.js";
+  import { generateMonthDatesArray } from "./generateMonthDatesArray.js";
+  import { addItem, removeItem } from "./array-fns";
+  import { createLocalStorage } from "./localstorage-fns";
 
   function filterGamesByYearMonth(g, year, month) {
     const requestedDate = new Date(year, month);
@@ -28,22 +30,42 @@
     return g.filter(({ date }) => isSameDay(requestedDate, new Date(date)));
   }
 
+  const storage = createLocalStorage("games", []);
+  const today = new Date();
   let year = today.getFullYear();
   let games = [];
   // Using this value to filter out the right games for the month;
-  let selectedMonthIndex = 6; //today.getMonth()
+  let selectedMonthIndex = today.getMonth();
+  let favsOnly = false;
   $: currentSelectedMonth = new Date(year, selectedMonthIndex);
   $: gamesForTheMonth = filterGamesByYearMonth(games, year, selectedMonthIndex);
+  let favouritedGames = storage.getItem();
   let errors = null;
 
   onMount(async function() {
     try {
       const resp = await getGames();
-      games = resp.data;
+      gamesStore.setGames(resp.data);
     } catch (e) {
       errors = e;
     }
   });
+
+  gamesStore.subscribe(g => {
+    games = g;
+  });
+
+  function toggleFavouriteGame(gameID) {
+    const index = favouritedGames.indexOf(gameID);
+
+    if (index === -1) {
+      favouritedGames = addItem(favouritedGames, { item: gameID });
+    } else {
+      favouritedGames = removeItem(favouritedGames, { index });
+    }
+
+    storage.setItem(favouritedGames);
+  }
 </script>
 
 <style>
@@ -54,7 +76,7 @@
   }
 
   .calendar__day {
-    height: 145px;
+    height: var(--calendar-day-height);
     overflow-y: scroll;
   }
 
@@ -89,6 +111,14 @@
 
   <div class="measure flex">
     <div class="mr3">
+      <label for="console" class="f6 b db mb2">Platform</label>
+      <select name="console" class="select">
+        <option value="all">All</option>
+        <option value="switch">Switch</option>
+        <option value="ps4">PS4</option>
+      </select>
+    </div>
+    <div class="mr3">
       <label for="month" class="f6 b db mb2">Month</label>
       <select name="month" class="select" bind:value={selectedMonthIndex}>
         {#each months as month, index (month)}
@@ -97,8 +127,8 @@
       </select>
     </div>
     <div>
-      <label for="month" class="f6 b db mb2">Year</label>
-      <select name="month" class="select" bind:value={year}>
+      <label for="year" class="f6 b db mb2">Year</label>
+      <select name="year" class="select" bind:value={year}>
         <option value={today.getFullYear()}>{today.getFullYear()}</option>
         <option value={today.getFullYear() + 1}>
            {today.getFullYear() + 1}
@@ -107,17 +137,28 @@
     </div>
   </div>
 
+  <div class="mv2">
+    <label for="favs" class="f6 b dib mb0">Display Favourites Only</label>
+    <input name="favs" type="checkbox" bind:checked={favsOnly} />
+  </div>
+
   <WeekRow />
 
-  <div class="calendar">
+  <div class="calendar mb3">
     {#each generateMonthDatesArray(currentSelectedMonth) as day}
       <div class="calendar__day ba b--black-05">
         {#if day >= 0}
           <div class="calendar__day ba b--black-05">
             <div class="flex justify-end pa2">
-              <Day> {day} </Day>
+              <Day
+                isToday={isSameDay(today, new Date(year, selectedMonthIndex, day))}>
+                 {day}
+              </Day>
             </div>
             <GameList
+              {favouritedGames}
+              {favsOnly}
+              onStarClick={toggleFavouriteGame}
               games={filterGamesByDay(gamesForTheMonth, new Date(year, selectedMonthIndex, day))} />
           </div>
         {/if}

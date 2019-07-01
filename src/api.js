@@ -4,5 +4,5 @@ import data from './data';
 const endpoint = 'https://immafridge.api.stdlib.com/upcoming-games@0.0.0/';
 
 export async function getGames() {
-  return new Promise(resolve => setTimeout(() => resolve(data)), 250);
+  return new Promise(resolve => setTimeout(() => resolve(data), 100));
 }

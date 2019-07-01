@@ -6,7 +6,9 @@
   import GameList from "./calendar/GameList.svelte";
   import { months } from "./months.js";
   import { generateMonthDatesArray } from "./generateMonthDatesArray.js";
-  import { isSameDay, isSameMonth, isSameYear, parse } from "date-fns";
+  import isSameDay from "date-fns/is_same_day";
+  import isSameMonth from "date-fns/is_same_month";
+  import isSameYear from "date-fns/is_same_year";
   import kebabcase from "lodash.kebabcase";
 
   const today = new Date();

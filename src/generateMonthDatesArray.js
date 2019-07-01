@@ -1,4 +1,5 @@
-import { startOfMonth, endOfMonth } from 'date-fns';
+import startOfMonth from 'date-fns/start_of_month';
+import endOfMonth from 'date-fns/end_of_month';
 
 // 7 rows (aka, our 7 days), multiplied by 6 rows (4 weeks + 2 for padding)
 const DAYS_TO_RENDER = 42;

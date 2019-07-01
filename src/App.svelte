@@ -8,6 +8,7 @@
   import Title from "./components/Title.svelte";
   import FavsOnly from "./components/FavsOnly.svelte";
   import PlatformSelect from "./components/PlatformSelect.svelte";
+  import MonthSwitcher from "./components/MonthSwitcher.svelte";
   import { games } from "./store/games";
 
   onMount(async function() {
@@ -35,21 +36,24 @@
 
 <div class="container mr-auto ml-auto">
 
-  <div class="mb4">
+  <div class="mb4 tr">
     <Title />
   </div>
 
-  <button
-    on:click={toggleFilter}
-    type="button"
-    style="cursor: pointer;"
-    class="no-underline cursor black bg-animate inline-flex items-center pa2 pl0
-    bn border-box">
-    Filters 
-    <span class="ml2 f7 pt1">
-      {#if filterActive}▼{:else}►{/if}
-    </span>
-  </button>
+  <div class="flex justify-between">
+    <button
+      on:click={toggleFilter}
+      type="button"
+      style="cursor: pointer;"
+      class="no-underline cursor black bg-animate inline-flex items-center pa2
+      pl0 bn border-box">
+      Filters 
+      <span class="ml2 f7 pt1">
+        {#if filterActive}▼{:else}►{/if}
+      </span>
+    </button>
+    <MonthSwitcher />
+  </div>
 
   {#if filterActive}
     <div transition:slide>

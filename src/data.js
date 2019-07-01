@@ -403,7 +403,7 @@ export default {
     {
       _id: '259844',
       date: '2019-07-25T04:00:00.000Z',
-      gameConsole: 'switch',
+      gameConsole: 'ps4',
       name: "Raiden V: Director's Cut",
       href:
         'https://gamefaqs.gamespot.com/switch/259844-raiden-v-directors-cut',

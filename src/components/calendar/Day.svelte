@@ -11,7 +11,7 @@
 </style>
 
 <span
-  class="Day br-100 f6 {isToday ? 'bg-hot-pink white' : 'bg-lightest-blue'} flex
+  class="Day br-100 f6 {isToday ? 'bg-hot-pink white' : 'bg-black-05'} flex
   items-center justify-center">
   <slot />
 </span>

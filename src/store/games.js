@@ -1,21 +1,6 @@
 import { writable, derived } from 'svelte/store';
-import isSameMonth from 'date-fns/is_same_month';
-import isSameYear from 'date-fns/is_same_year';
-import { year, month } from './time';
 
 const games = writable([]);
-
-const monthGames = derived([games, year, month], ([$games, $year, $month]) => {
-  const requestedDate = new Date($year, $month);
-
-  return $games.filter(({ date }) => {
-    const parsedDate = new Date(date);
-    return (
-      isSameMonth(parsedDate, requestedDate) &&
-      isSameYear(parsedDate, requestedDate)
-    );
-  });
-});
 
 const gamesBucket = derived([games], ([$games]) => {
   const bucket = $games.reduce((acc, game) => {
@@ -44,4 +29,4 @@ const gamesBucket = derived([games], ([$games]) => {
   return bucket;
 });
 
-export { games, monthGames, gamesBucket };
+export { games, gamesBucket };

@@ -1,6 +1,5 @@
 <script>
   import { onMount } from "svelte";
-  import isSameDay from "date-fns/is_same_day";
 
   import { getGames } from "./api.js";
   import Calendar from "./components/calendar/Calendar.svelte";
@@ -9,18 +8,15 @@
   import Title from "./components/Title.svelte";
   import FavsOnly from "./components/FavsOnly.svelte";
   import PlatformSelect from "./components/PlatformSelect.svelte";
-
   import { games } from "./store/games";
-
-  let favsOnly = false;
-  let errors = null;
 
   onMount(async function() {
     try {
       const resp = await getGames();
       games.set(resp.data);
     } catch (e) {
-      errors = e;
+      // TODO: Handle errors lol
+      throw new Error(e);
     }
   });
 </script>

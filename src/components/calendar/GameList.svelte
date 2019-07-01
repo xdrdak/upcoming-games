@@ -1,5 +1,7 @@
 <script>
   import kebabcase from "lodash.kebabcase";
+  import { fade } from "svelte/transition";
+
   import {
     favouritedGames,
     toggleFavouriteGame,
@@ -13,6 +15,7 @@
 
   {#each $favsOnly ? games.filter(g => $favouritedGames.indexOf(g._id) !== -1) : games as game}
     <li
+      transition:fade={{ delay: 0, duration: 100 }}
       class="br3 mb1 pa1 nowrap overflow-hidden truncate"
       class:bg-light-pink={game.gameConsole === 'ps4'}
       class:bg-light-green={game.gameConsole === 'switch'}>

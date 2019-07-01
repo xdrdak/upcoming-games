@@ -1,6 +1,6 @@
 <script>
   import isSameDay from "date-fns/is_same_day";
-
+  import { fade } from "svelte/transition";
   import WeekRow from "./WeekRow.svelte";
   import Day from "./Day.svelte";
   import GameList from "./GameList.svelte";
@@ -29,7 +29,9 @@
   {#each $monthDatesArray as day}
     <div class="calendar__day ba b--black-05">
       {#if day >= 0}
-        <div class="calendar__day ba b--black-05">
+        <div
+          class="calendar__day ba b--black-05"
+          transition:fade={{ delay: 0, duration: 100 }}>
           <div class="flex justify-end pa2">
             <Day isToday={isSameDay(new Date(), new Date($year, $month, day))}>
                {day}

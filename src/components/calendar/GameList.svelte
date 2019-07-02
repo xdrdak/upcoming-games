@@ -19,7 +19,9 @@
         transition:fade={{ delay: 0, duration: 100 }}
         class="br3 mb1 pa1 nowrap overflow-hidden truncate"
         class:bg-light-blue={game.gameConsole === 'ps4'}
-        class:bg-light-green={game.gameConsole === 'switch'}>
+        class:bg-light-red={game.gameConsole === 'switch'}
+        class:bg-light-green={game.gameConsole === 'xboxone'}
+        class:bg-light-purple={game.gameConsole === 'pc'}>
         <span
           class="pointer hover-gold"
           on:click={() => toggleFavouriteGame(game._id)}

@@ -1,6 +1,7 @@
 <script>
   import { month, year } from "../store/time";
 
+  // TODO: This is garbage. Move business logic to store
   let nextMonth = 0;
   let previousMonth = 0;
   let nextYear = 0;

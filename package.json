@@ -18,7 +18,7 @@
   },
   "scripts": {
     "build": "rollup -c",
-    "publish": "./publish.sh",
+    "publish": "yarn build && ./publish.sh",
     "autobuild": "rollup -c -w",
     "dev": "run-p start:dev autobuild",
     "start": "sirv public --single",

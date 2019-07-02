@@ -27,11 +27,11 @@
 
 <div class="calendar">
   {#each $monthDatesArray as day}
-    <div
-      class="calendar__day ba b--black-05"
-      transition:fade={{ delay: 0, duration: 100 }}>
+    <div class="calendar__day ba b--black-05">
       {#if day >= 0}
-        <div class="flex justify-end pa2">
+        <div
+          class="flex justify-end pa2"
+          transition:fade={{ delay: 0, duration: 100 }}>
           <Day isToday={isSameDay(new Date(), new Date($year, $month, day))}>
              {day}
           </Day>

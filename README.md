@@ -1,68 +1,36 @@
-*Psst — looking for a shareable component template? Go here --> [sveltejs/component-template](https://github.com/sveltejs/component-template)*
+# Game Release Calendar
 
----
+A little svelte app that displays a list of upcoming games.
 
-# svelte app
+Only PS4 and Switch games, since those are the consoles I have and the app was built for me.
 
-This is a project template for [Svelte](https://svelte.dev) apps. It lives at https://github.com/sveltejs/template.
+## Caveats
 
-To create a new project based on this template using [degit](https://github.com/Rich-Harris/degit):
+- List may or may not be up to date.
+- External IGDB link may or may not give the right game, since we're very much praying that the kebab case conversion of a game gives out a good url.
 
-```bash
-npx degit sveltejs/template svelte-app
-cd svelte-app
-```
+## TODO
 
-*Note that you will need to have [Node.js](https://nodejs.org) installed.*
+Here's a laundry list of things needed before I consider this app done and ready to be released into the wild.
 
+- [] Responsive view
+- [] Google Auth to persist favourites via accounts
+- [] Week View
+- [] Group games by console
+- [] Group games on calendar day
+- [] Digest Xbone Games
+- [] Digest PC Games
 
-## Get started
+## Future Ideas
 
-Install the dependencies...
+#### Cost Tracker
 
-```bash
-cd svelte-app
-npm install
-```
+Based on your favourites list, we will attempt to figure out how much a month would cost.
 
-...then start [Rollup](https://rollupjs.org):
+#### Export Favs
 
-```bash
-npm run dev
-```
+Show your favourites list to your friend so they can silently judge you.
 
-Navigate to [localhost:5000](http://localhost:5000). You should see your app running. Edit a component file in `src`, save it, and reload the page to see your changes.
+#### Better IGDB integration
 
-
-## Deploying to the web
-
-### With [now](https://zeit.co/now)
-
-Install `now` if you haven't already:
-
-```bash
-npm install -g now
-```
-
-Then, from within your project folder:
-
-```bash
-now
-```
-
-As an alternative, use the [Now desktop client](https://zeit.co/download) and simply drag the unzipped project folder to the taskbar icon.
-
-### With [surge](https://surge.sh/)
-
-Install `surge` if you haven't already:
-
-```bash
-npm install -g surge
-```
-
-Then, from within your project folder:
-
-```bash
-npm run build
-surge public
-```
+No need to redirect to an external site! Just click and get some info of the game directly in the app.

@@ -13,6 +13,7 @@ Only PS4 and Switch games, since those are the consoles I have and the app was b
 
 Here's a laundry list of things needed before I consider this app done and ready to be released into the wild.
 
+- [] Tests. Oh boy do I need tests...
 - [] Responsive view
 - [] Google Auth to persist favourites via accounts
 - [] Week View
